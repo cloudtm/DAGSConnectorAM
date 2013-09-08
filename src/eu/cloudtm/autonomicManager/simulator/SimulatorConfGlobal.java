@@ -22,7 +22,7 @@ class SimulatorConfGlobal {
 
       cacheObjects = (Integer) inputOracle.getParam(Param.NumberOfEntries);
       numServers = (Integer) inputOracle.getForecastParam(ForecastParam.NumNodes);
-      numClients = (Integer) inputOracle.getEvaluatedParam(EvaluatedParam.MAX_ACTIVE_THREADS);
+      numClients = (Integer) inputOracle.getEvaluatedParam(EvaluatedParam.MAX_ACTIVE_THREADS) * numServers; 
       objectReplicationDegree = (Integer) inputOracle.getForecastParam(ForecastParam.ReplicationDegree);
 
       startStatTime = 0L;
