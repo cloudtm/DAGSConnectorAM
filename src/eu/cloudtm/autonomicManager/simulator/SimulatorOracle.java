@@ -165,7 +165,7 @@ public class SimulatorOracle implements Oracle {
              responseTime = Double.parseDouble(token);
          }
          else if(offset == 6){
-             throughput = Double.parseDouble(token);
+             throughput = Double.parseDouble(token) * 1000000.0D;
          }
          else if(offset == 7){
              abortRate = Double.parseDouble(token);
