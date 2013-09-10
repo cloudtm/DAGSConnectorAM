@@ -88,7 +88,7 @@ public class SimulatorOracle implements Oracle {
             }*/
 
             while((line = br.readLine()) != null){
-               System.out.println(line);
+               //System.out.println(line);
                if(line.charAt(0) == '$'){
                    populateOutput(line, outputOracle, simulatorConf.getNumberOfClients());
 
