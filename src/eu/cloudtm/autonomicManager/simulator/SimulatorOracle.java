@@ -36,7 +36,7 @@ public class SimulatorOracle implements Oracle {
          props = new Properties();
 
          props.load(confOracle);
-
+        
 
       } catch (FileNotFoundException e1) {
          throw new OracleException(e1);
@@ -100,10 +100,10 @@ public class SimulatorOracle implements Oracle {
                if(!outputOracle.exists(i)){
                   break;
                }
-               System.out.println("Class "+i);
-               System.out.println("Throughput: "+outputOracle.throughput(i));
-               System.out.println("ResponseTime: "+outputOracle.responseTime(i));
-               System.out.println("Abort Rate: "+outputOracle.abortRate(i));
+               //System.out.println("Class "+i);
+               //System.out.println("Throughput: "+outputOracle.throughput(i));
+               //System.out.println("ResponseTime: "+outputOracle.responseTime(i));
+               //System.out.println("Abort Rate: "+outputOracle.abortRate(i));
             }
 
             shellIn.close();
