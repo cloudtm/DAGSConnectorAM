@@ -1,31 +1,20 @@
 package eu.cloudtm.autonomicManager.simulator;
 
-import eu.cloudtm.autonomicManager.commons.Param;
 import eu.cloudtm.autonomicManager.oracles.InputOracle;
 import eu.cloudtm.autonomicManager.oracles.Oracle;
 import eu.cloudtm.autonomicManager.oracles.OutputOracle;
 import eu.cloudtm.autonomicManager.oracles.exceptions.OracleException;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.Properties;
 import java.util.StringTokenizer;
 
 /**
  * @author Sebastiano Peluso
- *
  */
 public class SimulatorOracle implements Oracle {
 
    private Properties props = null;
-
    private SimulatorConf simulatorConf = null;
 
    public SimulatorOracle() throws OracleException {
@@ -36,13 +25,48 @@ public class SimulatorOracle implements Oracle {
          props = new Properties();
 
          props.load(confOracle);
-        
+
 
       } catch (FileNotFoundException e1) {
          throw new OracleException(e1);
       } catch (IOException e2) {
          throw new OracleException(e2);
       }
+
+   }
+
+   private static void populateOutput(String line, SimulatorOutputOracle outputOracle, int numberOfClients) {
+
+      StringTokenizer strTok = null;
+      String token;
+
+      strTok = new StringTokenizer(line, ";");
+      int offset = 0;
+      int classId = 0;
+      double responseTime = 0.0D;
+      double throughput = 0.0D;
+      double abortRate = 0.0D;
+      while (strTok.hasMoreTokens()) {
+         token = strTok.nextToken();
+
+         if (offset == 1) {
+            classId = Integer.parseInt(token);
+         } else if (offset == 5) {
+            responseTime = Double.parseDouble(token) * 1e-3;
+         } else if (offset == 6) {
+            throughput = Double.parseDouble(token) * 1000000.0D;
+         } else if (offset == 7) {
+            abortRate = Double.parseDouble(token);
+         }
+
+         offset++;
+      }
+
+      throughput *= numberOfClients;
+
+      outputOracle.addThroughput(classId, throughput);
+      outputOracle.addAbortRate(classId, abortRate);
+      outputOracle.addResponseTime(classId, responseTime);
 
    }
 
@@ -55,7 +79,7 @@ public class SimulatorOracle implements Oracle {
 
 
       File fileSimulatorConfDir = new File(dir);
-      if(fileSimulatorConfDir.exists()){
+      if (fileSimulatorConfDir.exists()) {
 
          File fileSimulatorConf = new File(fileSimulatorConfDir, "simulation.conf");
          FileWriter fw = null;
@@ -87,17 +111,17 @@ public class SimulatorOracle implements Oracle {
 
             }*/
 
-            while((line = br.readLine()) != null){
+            while ((line = br.readLine()) != null) {
                //System.out.println(line);
-               if(line.charAt(0) == '$'){
-                   populateOutput(line, outputOracle, simulatorConf.getNumberOfClients());
+               if (line.charAt(0) == '$') {
+                  populateOutput(line, outputOracle, simulatorConf.getNumberOfClients());
 
                }
 
             }
 
-            for(int i = 0; ; i++){
-               if(!outputOracle.exists(i)){
+            for (int i = 0; ; i++) {
+               if (!outputOracle.exists(i)) {
                   break;
                }
                //System.out.println("Class "+i);
@@ -110,17 +134,15 @@ public class SimulatorOracle implements Oracle {
 
             return outputOracle;
 
-         }catch (IOException e1) {
+         } catch (IOException e1) {
             throw new OracleException(e1);
-         }
-         catch (InterruptedException e2) {
+         } catch (InterruptedException e2) {
             throw new OracleException(e2);
-         }
-         finally {
-            if(out != null){
+         } finally {
+            if (out != null) {
                out.close();
             }
-            if(fw != null){
+            if (fw != null) {
                try {
                   fw.close();
                } catch (IOException e) {
@@ -130,55 +152,10 @@ public class SimulatorOracle implements Oracle {
          }
 
 
-
-
-
-
-      }
-      else{
-         throw new OracleException(dir+"does not exist");
+      } else {
+         throw new OracleException(dir + "does not exist");
       }
 
-
-
-
-   }
-
-   private static void populateOutput(String line, SimulatorOutputOracle outputOracle, int numberOfClients){
-
-      StringTokenizer strTok = null;
-      String token;
-
-      strTok = new StringTokenizer(line, ";");
-      int offset = 0;
-      int classId = 0;
-      double responseTime = 0.0D;
-      double throughput = 0.0D;
-      double abortRate = 0.0D;
-      while(strTok.hasMoreTokens()){
-         token = strTok.nextToken();
-
-         if(offset == 1){
-             classId = Integer.parseInt(token);
-         }
-         else if(offset == 5){
-             responseTime = Double.parseDouble(token);
-         }
-         else if(offset == 6){
-             throughput = Double.parseDouble(token) * 1000000.0D;
-         }
-         else if(offset == 7){
-             abortRate = Double.parseDouble(token);
-         }
-
-         offset++;
-      }
-
-      throughput *= numberOfClients;
-
-      outputOracle.addThroughput(classId, throughput);
-      outputOracle.addAbortRate(classId, abortRate);
-      outputOracle.addResponseTime(classId, responseTime);
 
    }
 }

@@ -48,14 +48,13 @@ public class SimulatorConfServer {
    SimulatorConfServer(InputOracle inputOracle) {
 
 
-
       maxServentsPerCpu = (Integer) inputOracle.getEvaluatedParam(EvaluatedParam.CORE_PER_CPU);
 
-      localTxGetCpuServiceDemand = ((Long) inputOracle.getParam(Param.ReadOnlyTxTotalCpuTime)) / ((Long) inputOracle.getParam(Param.AvgGetsPerROTransaction));
+      localTxGetCpuServiceDemand = (long) ((((Number) inputOracle.getParam(Param.ReadOnlyTxTotalCpuTime))).doubleValue() / (((Number) inputOracle.getParam(Param.AvgGetsPerROTransaction)).doubleValue()));
 
-      localTxPutCpuServiceDemand = ( ((Long) inputOracle.getParam(Param.LocalUpdateTxLocalServiceTime)) - (localTxGetCpuServiceDemand * ((Long) inputOracle.getParam(Param.AvgGetsPerWrTransaction))) ) / ((Long) inputOracle.getParam(Param.AvgPutsPerWrTransaction));
+      localTxPutCpuServiceDemand = (long) (((((Number) inputOracle.getParam(Param.LocalUpdateTxLocalServiceTime)).doubleValue()) - (localTxGetCpuServiceDemand * (((Number) inputOracle.getParam(Param.AvgGetsPerWrTransaction))).doubleValue())) / (((Number) inputOracle.getParam(Param.AvgPutsPerWrTransaction)).doubleValue()));
 
-      if(localTxPutCpuServiceDemand < 0 ) localTxPutCpuServiceDemand = 0L;
+      if (localTxPutCpuServiceDemand < 0) localTxPutCpuServiceDemand = 0L;
 
       localTxGetFromRemoteCpuServiceDemand = (Long) inputOracle.getParam(Param.AvgLocalGetTime);
 
