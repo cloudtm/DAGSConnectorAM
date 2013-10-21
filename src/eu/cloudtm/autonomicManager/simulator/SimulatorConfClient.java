@@ -10,7 +10,7 @@ class SimulatorConfClient {
 
    private String systemModel = "CLOSED";
    private String workloadType = "SYNTHETIC";
-   private Integer numberOfTransactions = 50;
+   private Integer numberOfTransactions = 70;
    private Integer numberOfThreads = 1;
    private String dataItemsAccessDistribution = "UNIFORM";
    private Integer numberOfTxClasses = 2;
