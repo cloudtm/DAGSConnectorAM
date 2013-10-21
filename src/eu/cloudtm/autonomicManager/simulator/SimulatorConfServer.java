@@ -56,23 +56,27 @@ public class SimulatorConfServer {
 
       if (localTxPutCpuServiceDemand < 0) localTxPutCpuServiceDemand = 0L;
 
-      localTxGetFromRemoteCpuServiceDemand = (Long) inputOracle.getParam(Param.AvgLocalGetTime);
+      localTxGetFromRemoteCpuServiceDemand = toLong(inputOracle.getParam(Param.AvgLocalGetTime));
 
-      txSendRemoteTxGetCpuServiceDemand = (Long) inputOracle.getParam(Param.AvgLocalGetTime);
+      txSendRemoteTxGetCpuServiceDemand = toLong(inputOracle.getParam(Param.AvgLocalGetTime));
 
-      txAbortCpuServiceDemand = (Long) inputOracle.getParam(Param.LocalUpdateTxLocalRollbackServiceTime);
+      txAbortCpuServiceDemand = toLong(inputOracle.getParam(Param.LocalUpdateTxLocalRollbackServiceTime));
 
-      localPrepareSuccessedCpuServiceDemand = (Long) inputOracle.getParam(Param.LocalUpdateTxPrepareServiceTime);
-      localPrepareFailedCpuServiceDemand = (Long) inputOracle.getParam(Param.LocalUpdateTxPrepareServiceTime);
+      localPrepareSuccessedCpuServiceDemand = toLong(inputOracle.getParam(Param.LocalUpdateTxPrepareServiceTime));
+      localPrepareFailedCpuServiceDemand = toLong(inputOracle.getParam(Param.LocalUpdateTxPrepareServiceTime));
 
-      localTxFinalCommitCpuServiceDemand = (Long) inputOracle.getParam(Param.LocalUpdateTxCommitServiceTime);
+      localTxFinalCommitCpuServiceDemand = toLong(inputOracle.getParam(Param.LocalUpdateTxCommitServiceTime));
 
-      txPrepareCpuServiceDemand = (Long) inputOracle.getParam(Param.LocalUpdateTxPrepareServiceTime);
+      txPrepareCpuServiceDemand = toLong(inputOracle.getParam(Param.LocalUpdateTxPrepareServiceTime));
 
-      txPrepareFailedCpuServiceDemand = (Long) inputOracle.getParam(Param.LocalUpdateTxPrepareServiceTime);
+      txPrepareFailedCpuServiceDemand = toLong(inputOracle.getParam(Param.LocalUpdateTxPrepareServiceTime));
 
-      distributedFinalTxCommitCpuServiceDemand = (Long) inputOracle.getParam(Param.LocalUpdateTxCommitServiceTime);
+      distributedFinalTxCommitCpuServiceDemand = toLong(inputOracle.getParam(Param.LocalUpdateTxCommitServiceTime));
 
+   }
+
+   private long toLong(Object o) {
+      return ((Number) o).longValue();
    }
 
    @Override
