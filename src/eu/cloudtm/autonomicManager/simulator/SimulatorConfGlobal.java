@@ -3,6 +3,7 @@ package eu.cloudtm.autonomicManager.simulator;
 import eu.cloudtm.autonomicManager.commons.EvaluatedParam;
 import eu.cloudtm.autonomicManager.commons.ForecastParam;
 import eu.cloudtm.autonomicManager.commons.Param;
+import eu.cloudtm.autonomicManager.commons.ReplicationProtocol;
 import eu.cloudtm.autonomicManager.oracles.InputOracle;
 
 /**
@@ -15,8 +16,10 @@ class SimulatorConfGlobal {
    private Integer numClients;
    private Integer objectReplicationDegree;
    private Long startStatTime;
-   private Long averageServerToServerNetDelay;    //TODO Chiedere a Pierangelo
-   private Long averageClientToServerNetDelay;    //TODO Chiedere a Pierangelo
+   private Long averageServerToServerNetDelay;    //TODO
+   private Long averageClientToServerNetDelay;    //TODO
+
+   ReplicationProtocol replicationProtocol;
 
    SimulatorConfGlobal(InputOracle inputOracle) {
 
@@ -25,11 +28,18 @@ class SimulatorConfGlobal {
       numClients = toInt(inputOracle.getEvaluatedParam(EvaluatedParam.MAX_ACTIVE_THREADS)) * numServers;
       objectReplicationDegree = toInt(inputOracle.getForecastParam(ForecastParam.ReplicationDegree));
 
+      replicationProtocol = (ReplicationProtocol) inputOracle.getForecastParam(ForecastParam.ReplicationProtocol);
+
+
       startStatTime = 0L;
       averageServerToServerNetDelay = 0L;
       averageClientToServerNetDelay = 0L;
 
 
+   }
+
+   ReplicationProtocol getReplicationProtocol(){
+      return replicationProtocol;
    }
 
    int getNumberOfClients() {

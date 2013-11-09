@@ -3,6 +3,7 @@ package eu.cloudtm.autonomicManager.simulator;
 import eu.cloudtm.autonomicManager.commons.EvaluatedParam;
 import eu.cloudtm.autonomicManager.commons.ForecastParam;
 import eu.cloudtm.autonomicManager.commons.Param;
+import eu.cloudtm.autonomicManager.commons.ReplicationProtocol;
 import eu.cloudtm.autonomicManager.oracles.InputOracle;
 import eu.cloudtm.autonomicManager.oracles.exceptions.OracleException;
 
@@ -53,6 +54,13 @@ class TestInputOracle implements InputOracle{
          forecastParams.put(ForecastParam.NumNodes, 3);
          evaluatedParams.put(EvaluatedParam.MAX_ACTIVE_THREADS, 6);
          forecastParams.put(ForecastParam.ReplicationDegree, 2);
+         forecastParams.put(ForecastParam.ReplicationProtocol, ReplicationProtocol.TWOPC);
+
+         params.put(Param.LocalUpdateTxLocalServiceTime, 14D);
+
+         params.put(Param.ReadOnlyTxTotalCpuTime, 14D);
+
+         params.put(Param.AvgNumPutsBySuccessfulLocalTx, 14D);
 
          params.put(Param.AvgPutsPerWrTransaction, 14D);
          params.put(Param.AvgGetsPerWrTransaction, 86L);

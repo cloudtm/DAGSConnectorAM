@@ -1,11 +1,16 @@
 package eu.cloudtm.autonomicManager.simulator;
 
+import eu.cloudtm.autonomicManager.commons.ReplicationProtocol;
 import eu.cloudtm.autonomicManager.oracles.InputOracle;
 
 /**
  * @author Sebastiano Peluso
  */
 class SimulatorConf {
+
+   public static final int TWOPC = 0;
+   public static final int TO = 1;
+   public static final int PB = 2;
 
    private SimulatorConfGlobal simulatorConfGlobal;
    private SimulatorConfClient simulatorConfClient;
@@ -24,6 +29,10 @@ class SimulatorConf {
 
    int getNumberOfClients(){
       return this.simulatorConfGlobal.getNumberOfClients();
+   }
+
+   ReplicationProtocol getReplicationProtocol(){
+      return this.simulatorConfGlobal.getReplicationProtocol();
    }
 
 

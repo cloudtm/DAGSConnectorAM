@@ -1,5 +1,6 @@
 package eu.cloudtm.autonomicManager.simulator;
 
+import eu.cloudtm.autonomicManager.commons.ReplicationProtocol;
 import eu.cloudtm.autonomicManager.oracles.InputOracle;
 import eu.cloudtm.autonomicManager.oracles.Oracle;
 import eu.cloudtm.autonomicManager.oracles.OutputOracle;
@@ -73,7 +74,9 @@ public class SimulatorOracle implements Oracle {
    public OutputOracle forecast(InputOracle input) throws OracleException {
 
       String dir = props.getProperty("directory");
-      String exec = props.getProperty("exec");
+      String execTWOPC = props.getProperty("execTWOPC");
+      String execTO = props.getProperty("execTO");
+      String execPB = props.getProperty("execPB");
 
       SimulatorConf simulatorConf = new SimulatorConf(input);
 
@@ -91,8 +94,21 @@ public class SimulatorOracle implements Oracle {
             out.print(simulatorConf);
             out.flush();
 
+            ProcessBuilder pb = null;
+            ReplicationProtocol replicationProtocol = simulatorConf.getReplicationProtocol();
+            if(ReplicationProtocol.TWOPC.equals(replicationProtocol)) {
+                pb = new ProcessBuilder(execTWOPC);
+            }
+            else if(ReplicationProtocol.TO.equals(replicationProtocol)) {
+                pb = new ProcessBuilder(execTO);
+            }
+            else if(ReplicationProtocol.PB.equals(replicationProtocol)) {
+                pb = new ProcessBuilder(execPB);
+            }
+            else{
+               new OracleException("Unknown replication protocol "+replicationProtocol);
+            }
 
-            ProcessBuilder pb = new ProcessBuilder(exec);
             pb.directory(fileSimulatorConfDir);
             Process p;
 
